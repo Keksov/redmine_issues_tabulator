@@ -1,4 +1,5 @@
 require 'redmine'
+require 'redmine_issues_tabulator'
 
 Redmine::Plugin.register :redmine_issues_tabulator do
   name 'Redmine issues tabulator'
