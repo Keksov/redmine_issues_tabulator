@@ -21,7 +21,11 @@ Visit http://www.tabulator.info/ for docs and full sources of Tabulator widget
         }
     }
     
-    // Tabulator.prototype.moduleBindings.htmlTableImport.prototype._findCol = function(title) {
+    // Textarea formatter should display HTML properly
+    Tabulator.prototype.moduleBindings.format.prototype.formatters.textarea = function( cell, formatterParams, onRendered ) {
+		cell.getElement().style.whiteSpace = "pre-wrap";
+        return this.emptyToSpace( cell.getValue() );
+	}
         
     // First, we create a fake table to get access to Row.prototype.createElement function
     // We have to override it with our own function
@@ -71,16 +75,24 @@ Visit http://www.tabulator.info/ for docs and full sources of Tabulator widget
             header.setAttribute( 'tabulator-field', 'buttons' );
             header.setAttribute( 'tabulator-title', ' ' );
             // let's stick this column to the right side of our table
-            header.setAttribute( 'tabulator-frozen', true );
+            //header.setAttribute( 'tabulator-frozen', true );
             continue;
         }
-        
+    
+        if ( header.classList.contains( 'subject' ) )  {
+            // Show subject without clipping
+            header.setAttribute( 'tabulator-variableHeight', true );
+            header.setAttribute( 'tabulator-formatter', 'textarea' );
+            continue;
+        }
+    
         //console.log( header );
     }
     //table.rowManager.rows[0].__proto__.createElement
     //let table = new Tabulator( 'table.list.issues', { headerSort : false, layout : 'fitDataFill', persistence : false } );
     // Creating tabulator object on top of our vanilla HTML table. All data from it will be imported automagically (see modules/html_table_import.js)
     let table = new Tabulator( 'table' + config.tableClassesSelector, config.tabulatorOptions );
+    //console.log( table );
     // fixing horizontal scroll bar problem
     $( 'div' + config.tableClassesSelector ).width( '99.5%' ); 
     
