@@ -7,6 +7,8 @@ Visit http://www.tabulator.info/ for docs and full sources of Tabulator widget
 */
 
 ( function() {
+    // return;
+    
     let config = {
         // Selector for RM issues table element as defined in app/views/issues/_list.html.erb
         // e.g. <table class="list issues odd-even <%= query.css_classes %>">
@@ -88,6 +90,7 @@ Visit http://www.tabulator.info/ for docs and full sources of Tabulator widget
     
         //console.log( header );
     }
+    //return;
     //table.rowManager.rows[0].__proto__.createElement
     //let table = new Tabulator( 'table.list.issues', { headerSort : false, layout : 'fitDataFill', persistence : false } );
     // Creating tabulator object on top of our vanilla HTML table. All data from it will be imported automagically (see modules/html_table_import.js)
@@ -105,7 +108,23 @@ Visit http://www.tabulator.info/ for docs and full sources of Tabulator widget
         boxes.prop( 'checked', checked ).parents( '.hascontextmenu' ).toggleClass( 'context-menu-selection', checked );
         checked ? table.selectRow( 'all' ) : table.deselectRow();
     }
+    //return;
     
+    $('div.tabulator-col-title').each((i, header) => {
+        let a = $(header).find('a');
+        if (a.length < 1 )
+            return;
+
+        let text = a.html();
+        if ( text.indexOf('Статус "' ) < 0 )
+            return;
+            
+        a.html( text.replace(/Статус "(.*)" (.*)/g, 'Статус "$1"<br/>$2') );
+        a.css('font-size', 'small');
+        $(header.parentElement).css('padding-top', '0.1em');
+        console.log(a.html());
+    });
+
     console.log( 'Issues tabulator was here' )
     
     //$("#download-xlsx").click(function(){
